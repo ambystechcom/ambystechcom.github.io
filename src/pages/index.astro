@@ -1,48 +1,88 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import TerminalHero from '../components/TerminalHero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+import site from '../data/site.json';
+import { getProjects } from '../utils/projects';
+
+const projects = await getProjects();
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Ambystech open source projects',
+    itemListElement: projects.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(`/projects/${p.id}/`, Astro.site).toString(),
+      name: p.data.repo,
+    })),
+  },
+];
+
+const keywords = [
+  'open source',
+  'ambystech',
+  'mit license',
+  ...new Set(projects.flatMap((p) => [p.data.language.toLowerCase(), ...p.data.topics])),
+];
 ---
 
-<Layout title="Welcome to Ambystech">
-  <main>
-    <h1>Welcome to <span class="text-gradient">Ambystech</span></h1>
-    <p class="instructions">
-      This is a static site built with <strong>Astro</strong> framework.
-    </p>
-  </main>
-</Layout>
+<Layout
+  title="Ambystech Open Source — libraries and tools, MIT licensed"
+  keywords={keywords}
+  schema={schema}
+>
+  <Nav />
+  <main id="main">
+    <TerminalHero />
 
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-  
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-  
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-  
-  .instructions {
-    margin-bottom: 2rem;
-    border: 1px solid rgba(var(--accent-light), 25%);
-    background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-    padding: 1.5rem;
-    border-radius: 8px;
-  }
-</style>
+    <section id="projects" class="mx-auto w-full max-w-6xl px-5 pb-12 pt-8" aria-labelledby="projects-title">
+      <h2 id="projects-title" class="mb-3 font-mono text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold tracking-tight" data-reveal>
+        <span class="text-fanatic-fuchsia">$</span> ls <span class="text-vivid-sky-blue">~/oss</span>
+      </h2>
+      <p class="mb-11 max-w-2xl text-ink-dim" data-reveal>
+        Everything below is on GitHub today — installable from NuGet and npm,
+        documented, and part of our own everyday toolkit.
+      </p>
+      <div class="grid grid-cols-1 items-stretch gap-6 max-lg:max-w-xl lg:grid-cols-3">
+        {projects.map((project, i) => (
+          <div class="h-full" data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+            <ProjectCard project={project} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="ethos" class="mx-auto w-full max-w-6xl px-5 pb-8 pt-18" aria-labelledby="ethos-title">
+      <h2 id="ethos-title" class="mb-3 font-mono text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold tracking-tight" data-reveal>
+        <span class="text-fanatic-fuchsia">$</span> cat <span class="text-vivid-sky-blue">ETHOS.yml</span>
+      </h2>
+      <dl class="mt-9 max-w-3xl border-l-2 border-fanatic-fuchsia-lighter pl-7" data-reveal style="--reveal-delay: .1s">
+        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
+          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-fanatic-fuchsia">license:</span></dt>
+          <dd class="m-0 text-ink-dim">MIT, always. Use it commercially, fork it, embed it, ship it — no strings.</dd>
+        </div>
+        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
+          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-vivid-sky-blue">origin:</span></dt>
+          <dd class="m-0 text-ink-dim">Crafted by the Ambystech team, battle-tested in daily use before release.</dd>
+        </div>
+        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
+          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-dark-orchid">contrib:</span></dt>
+          <dd class="m-0 text-ink-dim">Issues, pull requests and discussions are welcome in every repository.</dd>
+        </div>
+      </dl>
+      <div class="mt-10" data-reveal style="--reveal-delay: .2s">
+        <a
+          class="inline-flex rounded-full border border-fanatic-fuchsia px-6 py-2.5 font-mono text-[0.95rem] font-semibold text-ink no-underline transition-colors hover:bg-fanatic-fuchsia"
+          href={site.urls.githubOrg}
+          rel="noopener"
+        >Open an issue, send a PR →</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

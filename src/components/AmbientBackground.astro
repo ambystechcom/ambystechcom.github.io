@@ -1,0 +1,108 @@
+---
+// Animated version of the body's ambient gradient wash: a fullscreen
+// Three.js shader draws the same three brand-colored glows, drifting
+// and breathing on ~60s cycles. The canvas paints opaquely over the
+// static CSS gradients, which remain as the no-JS / reduced-motion /
+// no-WebGL fallback. Non-interactive, pauses when the tab is hidden.
+---
+
+<canvas id="ambient-bg" class="pointer-events-none fixed inset-0 -z-10 h-full w-full" aria-hidden="true"></canvas>
+
+<script>
+  import {
+    Mesh,
+    OrthographicCamera,
+    PlaneGeometry,
+    Scene,
+    ShaderMaterial,
+    Vector2,
+    WebGLRenderer,
+  } from 'three';
+
+  const canvas = document.getElementById('ambient-bg') as HTMLCanvasElement | null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canvas && !reduceMotion) {
+    try {
+      const renderer = new WebGLRenderer({ canvas, antialias: false });
+      // Soft glows need almost no resolution — render at half size for cheap frames
+      renderer.setPixelRatio(0.5);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new Scene();
+      const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+      const material = new ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uRes: { value: new Vector2(window.innerWidth, window.innerHeight) },
+        },
+        vertexShader: /* glsl */ `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = vec4(position.xy, 0.0, 1.0);
+          }
+        `,
+        fragmentShader: /* glsl */ `
+          precision highp float;
+          uniform float uTime;
+          uniform vec2 uRes;
+          varying vec2 vUv;
+
+          float blob(vec2 uv, vec2 center, float radius) {
+            vec2 d = uv - center;
+            d.x *= uRes.x / uRes.y;
+            return exp(-dot(d, d) / (radius * radius));
+          }
+
+          void main() {
+            vec2 uv = vUv;
+            float t = uTime;
+            vec3 col = vec3(0.039, 0.051, 0.078); // deep #0A0D14
+
+            // Same three glows as the static CSS wash, drifting on ~60s cycles
+            vec2 orchidC   = vec2(0.85 + 0.05 * sin(t * 0.11),        1.05 + 0.05 * cos(t * 0.09));
+            vec2 blueC     = vec2(-0.10 + 0.06 * cos(t * 0.07),       0.62 + 0.07 * sin(t * 0.08));
+            vec2 fuchsiaC  = vec2(0.72 + 0.07 * sin(t * 0.06 + 2.0), -0.02 + 0.05 * cos(t * 0.10 + 1.0));
+
+            float orchid  = blob(uv, orchidC,  0.46) * (0.22 + 0.05 * sin(t * 0.13));
+            float blue    = blob(uv, blueC,    0.42) * (0.16 + 0.04 * cos(t * 0.10 + 1.7));
+            float fuchsia = blob(uv, fuchsiaC, 0.36) * (0.11 + 0.04 * sin(t * 0.09 + 3.1));
+
+            col += vec3(0.600, 0.196, 0.800) * orchid;  // dark orchid
+            col += vec3(0.235, 0.412, 0.906) * blue;    // bluetiful
+            col += vec3(0.933, 0.067, 0.600) * fuchsia; // fanatic fuchsia
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+      });
+
+      scene.add(new Mesh(new PlaneGeometry(2, 2), material));
+
+      let raf = 0;
+      const tick = (t: number) => {
+        material.uniforms.uTime.value = t / 1000;
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+        } else {
+          raf = requestAnimationFrame(tick);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        material.uniforms.uRes.value.set(window.innerWidth, window.innerHeight);
+      });
+    } catch {
+      /* No WebGL — the static gradient background stays */
+    }
+  }
+</script>

@@ -1,0 +1,84 @@
+---
+name: ambykit
+repo: AmbyKit
+url: https://github.com/ambystechcom/AmbyKit
+language: TypeScript
+registry: npm
+packageName: "@ambystech/ambykit"
+install: npm install -g @ambystech/ambykit
+accent: orchid
+terminalAbout: spec-driven AI dev
+tagline: Spec-driven development for AI coding agents
+description: Author your specs, user stories, plans and tasks once — AmbyKit emits native config for Claude Code, OpenCode, GitHub Copilot, Cursor, Antigravity and more.
+topics: [spec-driven, ai-coding, agent-skills]
+order: 3
+---
+
+**Spec-Driven Development for AI coding assistants.** Author your specs, user stories, UI design, plans and tasks **once** — AmbyKit emits native commands and rules for every assistant your team uses, so the AI builds from clear, testable requirements instead of guessing.
+
+## Quick start
+
+Install from npm and scaffold AmbyKit into your project:
+
+```bash
+npm install -g @ambystech/ambykit
+ambykit init            # scaffold .amby/ and pick your assistants
+# — or run it without installing —
+npx @ambystech/ambykit init
+```
+
+Then, inside your AI assistant, walk the workflow:
+
+```bash
+/amby.constitution   # one-time: set your project's guiding principles
+/amby.specify        # describe a feature → spec.md (user stories + EARS requirements)
+/amby.clarify        # resolve open questions
+/amby.design         # UI spec + design-tokens.json
+/amby.plan           # technical plan
+/amby.tasks          # ordered, dependency-aware task list
+/amby.implement      # build it
+```
+
+Track progress from the terminal:
+
+```bash
+ambykit dashboard
+ambykit dashboard 001:US-3   # story ids restart per feature — qualify with the feature ref
+```
+
+## Why
+
+AI coding assistants build better software when they start from good requirements. But every assistant reads a *different* config format, and specs written for one don't carry to another. AmbyKit fixes both: it gives you a rigorous, tech-agnostic SDD workflow **and** a single source of truth that compiles to each tool's native format.
+
+- **WHAT before HOW.** `spec.md` captures user stories + testable requirements with no tech decisions; `plan.md` captures the technical approach separately.
+- **UI is a first-class artifact.** `/amby.design` produces a UI spec + design tokens — the part most spec tools skip.
+- **Author once, emit per tool.** One neutral source → Claude Code, OpenCode, GitHub Copilot (VS Code + CLI), Cursor (+ CLI), Antigravity (IDE + CLI).
+
+## The workflow
+
+| Phase | Command | Output |
+|---|---|---|
+| Governance (once) | `/amby.constitution` | `.amby/constitution.md` |
+| Specify (WHAT/WHY) | `/amby.specify` | `specs/NNN-feature/spec.md` |
+| Clarify | `/amby.clarify` | resolves `[NEEDS CLARIFICATION]` markers |
+| Design (UI) | `/amby.design` | `ui.md` + `design-tokens.json` |
+| Plan (HOW) | `/amby.plan` | `plan.md` (+ `data-model.md`, `contracts/`) |
+| Tasks | `/amby.tasks` | `tasks.md` |
+| Analyze | `/amby.analyze` | cross-artifact consistency report |
+| Implement | `/amby.implement` | executes `tasks.md` |
+
+Requirements use **user stories** (`US-#`) + **EARS** functional requirements (`FR-###`) + **Given/When/Then** acceptance criteria. Stories carry `priority` and `depends-on`/`blocked-by` so work can be ordered and blocked; `ambykit dashboard` reports progress across the story/task graph.
+
+## CLI
+
+| Command | Description |
+|---|---|
+| `ambykit init [dir]` | Scaffold `.amby/`, pick tools, emit their files + `AGENTS.md`/`CLAUDE.md` |
+| `ambykit add <tool…>` | Add or refresh one tool's integration |
+| `ambykit sync` | Re-emit all configured tools from the neutral source |
+| `ambykit dashboard [story-id]` | Progress view over the story/task graph |
+| `ambykit analyze` | Validate the dependency graph (cycles, blockers, orphans) |
+| `ambykit check` | Doctor: verify integrations |
+| `ambykit upgrade` | Update AmbyKit and re-sync |
+
+Full documentation lives at [ambystech.io/AmbyKit](https://ambystech.io/AmbyKit/).

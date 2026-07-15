@@ -1,0 +1,51 @@
+---
+interface Props {
+  command: string;
+  label: string;
+}
+
+const { command, label } = Astro.props;
+---
+
+<div class="flex items-center gap-2 rounded-[10px] border border-line bg-deep py-2 pl-3.5 pr-2">
+  <code class="grow font-mono text-[0.76rem] leading-normal text-vivid-sky-blue [overflow-wrap:anywhere]">{command}</code>
+  <button
+    type="button"
+    class="copy inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-[7px] border border-line bg-transparent text-ink-dim transition-colors hover:border-(--accent,var(--color-fanatic-fuchsia)) hover:text-(--accent,var(--color-fanatic-fuchsia))"
+    data-copy={command}
+    aria-label={`Copy install command for ${label}`}
+  >
+    <svg class="icon-copy" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+      <path d="M10.5 5.5v-2a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3.5v5A1.5 1.5 0 0 0 4 10h1.5" />
+    </svg>
+    <svg class="icon-check" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="m3 8.5 3.5 3.5L13 5" />
+    </svg>
+  </button>
+</div>
+
+<style>
+  .copy .icon-check { display: none; }
+  .copy.copied {
+    color: var(--color-vivid-sky-blue) !important;
+    border-color: var(--color-vivid-sky-blue) !important;
+  }
+  .copy.copied .icon-copy { display: none; }
+  .copy.copied .icon-check { display: block; }
+</style>
+
+<script>
+  // Copy-to-clipboard with a brief "copied" state.
+  document.querySelectorAll<HTMLButtonElement>('.copy[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1600);
+      } catch {
+        /* clipboard unavailable (e.g. insecure context) — leave the command selectable */
+      }
+    });
+  });
+</script>

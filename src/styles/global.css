@@ -1,0 +1,269 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Ambystech Open Source — design tokens
+   Palette inherited from the Ambystech corporate site and
+   treated here as an ANSI true-color terminal theme.
+   ============================================================ */
+@theme {
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'Cascadia Code', Consolas, monospace;
+
+  --color-fanatic-fuchsia: #EE1199;
+  --color-fanatic-fuchsia-dark: #cc0f82;
+  --color-fanatic-fuchsia-light: rgba(238, 17, 153, 0.5);
+  --color-fanatic-fuchsia-lighter: rgba(238, 17, 153, 0.2);
+  --color-bluetiful: #3C69E7;
+  --color-bluetiful-light: rgba(60, 105, 231, 0.5);
+  --color-dark-orchid: #9932CC;
+  --color-dark-orchid-light: rgba(153, 50, 204, 0.5);
+  --color-vivid-sky-blue: #00CCFF;
+  --color-vivid-sky-blue-dark: #0099CC;
+  --color-deep: #0A0D14;
+  --color-deep-raised: #10141f;
+
+  --color-ink: #f4f6fb;
+  --color-ink-dim: rgba(244, 246, 251, 0.68);
+  --color-ink-faint: rgba(244, 246, 251, 0.42);
+  --color-line: rgba(244, 246, 251, 0.12);
+
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-deep);
+    /* Ambient wash: the corporate purple-over-dark mood, in pure CSS */
+    background-image:
+      radial-gradient(60rem 40rem at 85% -10%, rgba(153, 50, 204, 0.22), transparent 65%),
+      radial-gradient(50rem 36rem at -15% 30%, rgba(60, 105, 231, 0.16), transparent 60%),
+      radial-gradient(44rem 30rem at 70% 105%, rgba(238, 17, 153, 0.10), transparent 60%);
+    background-attachment: fixed;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-fanatic-fuchsia);
+    color: #fff;
+  }
+
+  /* Visible keyboard focus in brand color (corporate convention) */
+  :focus-visible {
+    outline: 2px solid var(--color-vivid-sky-blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* Brand gradient, same stops as the corporate site */
+.gradient-text {
+  background-image: linear-gradient(90deg, #EE1199 0%, #9932CC 28%, #00CCFF 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3.5rem;
+  z-index: 999;
+  background: var(--color-fanatic-fuchsia);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.25s var(--ease-brand);
+}
+.skip-link:focus { top: 0; }
+
+/* Nav links: animated underline grows from the left (corporate convention) */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-fanatic-fuchsia);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-brand);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ============================================================
+   Prose — rendered markdown on project detail pages.
+   Headings pick up the page's --accent (set per project).
+   ============================================================ */
+.prose {
+  max-width: 50rem;
+  padding-block: 2rem 3rem;
+  font-size: 1rem;
+  color: var(--color-ink-dim);
+}
+.prose h2 {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin: 2.5rem 0 1rem;
+}
+.prose h2::before {
+  content: "## ";
+  color: var(--accent, var(--color-fanatic-fuchsia));
+}
+.prose h3 {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 2rem 0 0.75rem;
+}
+.prose p { margin: 0 0 1rem; }
+.prose strong { color: var(--color-ink); }
+.prose a {
+  color: var(--color-vivid-sky-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose a:hover { color: var(--color-fanatic-fuchsia); }
+.prose ul, .prose ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.4rem;
+}
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-bottom: 0.4rem; }
+.prose li::marker { color: var(--accent, var(--color-fanatic-fuchsia)); }
+.prose code {
+  font-size: 0.85em;
+  color: var(--color-vivid-sky-blue);
+  background: rgba(244, 246, 251, 0.06);
+  border-radius: 5px;
+  padding: 0.1em 0.4em;
+}
+.prose pre {
+  background: var(--color-deep-raised) !important;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  padding: 1.1rem 1.3rem;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin: 0 0 1.5rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th, .prose td {
+  text-align: left;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.55rem 1rem 0.55rem 0;
+  vertical-align: top;
+}
+.prose th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+.prose blockquote {
+  border-left: 2px solid var(--accent, var(--color-fanatic-fuchsia));
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+  color: var(--color-ink-faint);
+}
+.prose img { max-width: 100%; border-radius: 12px; }
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-line);
+  margin: 2rem 0;
+}
+
+/* ============================================================
+   Motion system — mirrors the corporate [data-reveal] pattern.
+   Gated on html.js so no-JS users always see content.
+   ============================================================ */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease-brand),
+    transform 0.7s var(--ease-brand);
+  transition-delay: var(--reveal-delay, 0s);
+}
+html.js [data-reveal="fade"] { transform: none; }
+html.js [data-reveal="left"] { transform: translateX(-32px); }
+html.js [data-reveal="right"] { transform: translateX(32px); }
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Interactive card language: lift + brand glow (corporate convention) */
+.card-lift {
+  transition:
+    transform 0.35s var(--ease-brand),
+    box-shadow 0.35s var(--ease-brand),
+    border-color 0.35s var(--ease-brand);
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .card-lift, .card-lift:hover {
+    transform: none;
+    transition: none;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

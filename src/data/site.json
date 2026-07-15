@@ -1,0 +1,18 @@
+{
+  "name": "Ambystech Open Source",
+  "company": "Ambystech",
+  "legalName": "Xolotl Byteworks S.A. de C.V.",
+  "email": "hi@ambystech.com",
+  "tagline": "Open source from the Ambystech team.",
+  "urls": {
+    "corporate": "https://www.ambystech.com",
+    "blog": "https://www.ambystech.com/en/blog",
+    "jobs": "https://www.ambystech.com/en/jobs",
+    "githubOrg": "https://github.com/ambystechcom"
+  },
+  "socialLinks": [
+    { "name": "GitHub", "url": "https://github.com/ambystechcom" },
+    { "name": "X", "url": "https://twitter.com/ambystechcom" },
+    { "name": "LinkedIn", "url": "https://linkedin.com/company/ambystechmx" }
+  ]
+}

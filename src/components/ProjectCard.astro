@@ -1,0 +1,44 @@
+---
+import InstallCommand from './InstallCommand.astro';
+import { accents, packageUrl, type ProjectEntry } from '../utils/projects';
+
+interface Props {
+  project: ProjectEntry;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const accent = accents[data.accent];
+const detailUrl = `/projects/${project.id}/`;
+---
+
+<article
+  class="card-lift flex h-full flex-col rounded-3xl border border-(--accent)/45 bg-ink/[0.025] px-6 pb-6 pt-7 hover:border-(--accent) hover:shadow-[0_18px_40px_-18px_var(--accent-soft)]"
+  style={`--accent: ${accent.color}; --accent-soft: ${accent.soft};`}
+>
+  <p class="mb-2 font-mono text-xs text-ink-faint [overflow-wrap:anywhere]">ambystechcom/<wbr />{data.repo}</p>
+  <h3 class="mb-1.5 font-mono text-[1.35rem] font-extrabold tracking-tight">
+    <a href={detailUrl} class="text-(--accent) no-underline hover:underline">{data.name}</a>
+  </h3>
+  <p class="mb-3 text-[0.95rem] font-semibold">{data.tagline}</p>
+  <p class="mb-4 grow text-[0.92rem] leading-relaxed text-ink-dim">{data.description}</p>
+  <ul class="m-0 mb-5 flex list-none flex-wrap gap-2 p-0" aria-label="Topics">
+    {data.topics.map((topic) => (
+      <li class="rounded-full border border-line px-2.5 py-0.5 font-mono text-[0.7rem] text-ink-dim">{topic}</li>
+    ))}
+  </ul>
+  <div class="mb-4">
+    <InstallCommand command={data.install} label={data.name} />
+  </div>
+  <p class="m-0 flex flex-wrap items-center gap-4 font-mono text-xs text-ink-faint">
+    <span class="rounded-[5px] border border-(--accent)/45 px-2 py-px font-semibold text-(--accent)">{data.license}</span>
+    <span>{data.language}</span>
+    <a href={packageUrl(data)} rel="noopener" class="text-ink-faint no-underline hover:text-(--accent) hover:underline">{data.registry}</a>
+    <a href={detailUrl} class="ml-auto inline-flex items-center gap-1.5 text-ink-dim no-underline transition-colors hover:text-(--accent)">
+      Details
+      <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 8h10M9 4l4 4-4 4" />
+      </svg>
+    </a>
+  </p>
+</article>

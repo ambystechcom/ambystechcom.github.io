@@ -1,0 +1,59 @@
+---
+import site from '../data/site.json';
+import logo from '../assets/ambystech-logo.svg';
+import { getProjects } from '../utils/projects';
+
+const projects = await getProjects();
+const year = new Date().getFullYear();
+const socialUrl = (name: string) => site.socialLinks.find((s) => s.name === name)?.url;
+---
+
+<footer class="mt-20 border-t border-line bg-deep py-12 pb-8">
+  <div class="mx-auto w-full max-w-6xl px-5">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-[2fr_1fr_1fr_auto]">
+      <div class="col-span-2 md:col-span-1">
+        <img src={logo.src} alt="Ambystech" class="mb-3 h-10 w-auto" />
+        <p class="mb-1.5 text-sm text-ink-dim">{site.tagline}</p>
+        <p class="text-sm"><a href={`mailto:${site.email}`} class="text-vivid-sky-blue no-underline hover:underline">{site.email}</a></p>
+      </div>
+      <nav aria-label="Projects">
+        <h2 class="mb-3 font-mono text-xs font-bold uppercase tracking-[0.08em] text-ink-faint">Projects</h2>
+        <ul class="m-0 list-none p-0">
+          {projects.map((p) => (
+            <li class="mb-2"><a href={`/projects/${p.id}/`} class="text-sm text-ink-dim no-underline hover:text-ink">{p.data.name}</a></li>
+          ))}
+          <li class="mb-2"><a href={site.urls.githubOrg} rel="noopener" class="text-sm text-ink-dim no-underline hover:text-ink">all repositories</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Ambystech">
+        <h2 class="mb-3 font-mono text-xs font-bold uppercase tracking-[0.08em] text-ink-faint">Ambystech</h2>
+        <ul class="m-0 list-none p-0">
+          <li class="mb-2"><a href={site.urls.corporate} rel="noopener" class="text-sm text-ink-dim no-underline hover:text-ink">ambystech.com</a></li>
+          <li class="mb-2"><a href={site.urls.blog} rel="noopener" class="text-sm text-ink-dim no-underline hover:text-ink">Blog</a></li>
+          <li class="mb-2"><a href={site.urls.jobs} rel="noopener" class="text-sm text-ink-dim no-underline hover:text-ink">Jobs</a></li>
+        </ul>
+      </nav>
+      <div class="col-span-2 flex items-start justify-start gap-4 md:col-span-1 md:justify-end">
+        <a href={socialUrl('GitHub')} rel="noopener" aria-label="Ambystech on GitHub" class="text-ink-dim transition-colors hover:text-fanatic-fuchsia">
+          <svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+          </svg>
+        </a>
+        <a href={socialUrl('X')} rel="noopener" aria-label="Ambystech on X" class="text-ink-dim transition-colors hover:text-fanatic-fuchsia">
+          <svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true" fill="currentColor">
+            <path d="M12.6.75h2.45L9.7 6.88 16 15.25h-4.93L7.2 10.2l-4.42 5.05H.32l5.73-6.55L0 .75h5.06l3.5 4.62L12.6.75Zm-.86 13.03h1.36L4.32 2.14H2.87l8.87 11.64Z"/>
+          </svg>
+        </a>
+        <a href={socialUrl('LinkedIn')} rel="noopener" aria-label="Ambystech on LinkedIn" class="text-ink-dim transition-colors hover:text-fanatic-fuchsia">
+          <svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true" fill="currentColor">
+            <path d="M14.8 0H1.2C.5 0 0 .5 0 1.2v13.6c0 .7.5 1.2 1.2 1.2h13.6c.7 0 1.2-.5 1.2-1.2V1.2C16 .5 15.5 0 14.8 0ZM4.7 13.6H2.4V6h2.4v7.6ZM3.6 5c-.8 0-1.4-.6-1.4-1.4 0-.8.6-1.4 1.4-1.4.8 0 1.4.6 1.4 1.4C4.9 4.4 4.3 5 3.6 5Zm10 8.6h-2.4V9.9c0-.9 0-2-1.2-2s-1.5 1-1.5 2v3.8H6.1V6h2.3v1h.1c.3-.6 1.1-1.2 2.2-1.2 2.4 0 2.9 1.6 2.9 3.7v4.1Z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="mt-10 flex flex-wrap justify-between gap-2 border-t border-line pt-5">
+      <p class="m-0 text-[0.8rem] text-ink-faint">© {year} {site.company} · {site.legalName}</p>
+      <p class="m-0 text-[0.8rem] text-ink-faint">All projects MIT licensed unless noted otherwise.</p>
+    </div>
+  </div>
+</footer>
