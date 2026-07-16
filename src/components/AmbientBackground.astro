@@ -61,14 +61,14 @@
             float t = uTime;
             vec3 col = vec3(0.039, 0.051, 0.078); // deep #0A0D14
 
-            // Same three glows as the static CSS wash, drifting on ~60s cycles
-            vec2 orchidC   = vec2(0.85 + 0.05 * sin(t * 0.11),        1.05 + 0.05 * cos(t * 0.09));
-            vec2 blueC     = vec2(-0.10 + 0.06 * cos(t * 0.07),       0.62 + 0.07 * sin(t * 0.08));
-            vec2 fuchsiaC  = vec2(0.72 + 0.07 * sin(t * 0.06 + 2.0), -0.02 + 0.05 * cos(t * 0.10 + 1.0));
+            // Same three glows as the static CSS wash, flowing on ~35-45s cycles
+            vec2 orchidC   = vec2(0.84 + 0.11 * sin(t * 0.18),        1.00 + 0.09 * cos(t * 0.14));
+            vec2 blueC     = vec2(-0.08 + 0.13 * cos(t * 0.13),       0.60 + 0.14 * sin(t * 0.16));
+            vec2 fuchsiaC  = vec2(0.70 + 0.14 * sin(t * 0.11 + 2.0),  0.02 + 0.10 * cos(t * 0.17 + 1.0));
 
-            float orchid  = blob(uv, orchidC,  0.46) * (0.22 + 0.05 * sin(t * 0.13));
-            float blue    = blob(uv, blueC,    0.42) * (0.16 + 0.04 * cos(t * 0.10 + 1.7));
-            float fuchsia = blob(uv, fuchsiaC, 0.36) * (0.11 + 0.04 * sin(t * 0.09 + 3.1));
+            float orchid  = blob(uv, orchidC,  0.46) * (0.30 + 0.08 * sin(t * 0.15));
+            float blue    = blob(uv, blueC,    0.42) * (0.23 + 0.07 * cos(t * 0.12 + 1.7));
+            float fuchsia = blob(uv, fuchsiaC, 0.36) * (0.17 + 0.07 * sin(t * 0.13 + 3.1));
 
             col += vec3(0.600, 0.196, 0.800) * orchid;  // dark orchid
             col += vec3(0.235, 0.412, 0.906) * blue;    // bluetiful
