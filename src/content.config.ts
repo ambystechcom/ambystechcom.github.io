@@ -14,7 +14,7 @@ const projects = defineCollection({
     packageName: z.string(),
     install: z.string(),
     license: z.string().default('MIT'),
-    accent: z.enum(['fuchsia', 'sky', 'orchid']),
+    accent: z.enum(['fuchsia', 'sky', 'orchid', 'bluetiful']),
     /** Very short label for the hero terminal's ABOUT column */
     terminalAbout: z.string(),
     tagline: z.string(),
