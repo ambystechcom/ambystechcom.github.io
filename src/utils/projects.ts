@@ -21,4 +21,5 @@ export const accents: Record<ProjectData['accent'], { color: string; soft: strin
   fuchsia: { color: 'var(--color-fanatic-fuchsia)', soft: 'rgba(238, 17, 153, 0.45)' },
   sky: { color: 'var(--color-vivid-sky-blue)', soft: 'rgba(0, 204, 255, 0.4)' },
   orchid: { color: 'var(--color-dark-orchid)', soft: 'rgba(153, 50, 204, 0.5)' },
+  bluetiful: { color: 'var(--color-bluetiful)', soft: 'rgba(60, 105, 231, 0.5)' },
 };
