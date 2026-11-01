@@ -31,3 +31,11 @@ Projects are an Astro content collection: each one is a markdown file in `src/co
 Site-wide constants (company name, legal name, contact email, corporate/social URLs) live in `src/data/site.json`.
 
 The visual identity (palette, motion, card language) is shared with the [Ambystech corporate site](https://www.ambystech.com); design tokens are defined in the `@theme` block of `src/styles/global.css`.
+
+## Shared components
+
+Header, footer, `CTABand`, `Icon`, the design tokens and the `.container-site` / `.btn-*` / `.tag` / `.section-*` utilities come from [`@ambystech/ui`](https://github.com/ambystechcom/ambystech-ui), shared with the corporate site. Check there before adding a component. To update:
+
+```sh
+npm i github:ambystechcom/ambystech-ui#vX.Y.Z
+```

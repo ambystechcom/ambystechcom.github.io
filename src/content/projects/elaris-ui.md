@@ -6,8 +6,8 @@ language: C#
 registry: NuGet
 packageName: Ambystech.Elaris.UI
 install: dotnet add package Ambystech.Elaris.UI
-accent: fuchsia
-terminalAbout: true-color terminal UI
+tile: purple
+icon: code
 tagline: True-color terminal UI for .NET
 description: A lightweight terminal UI library with true 24-bit RGB color support. Built for modern terminals, cross-platform on Windows, macOS and Linux.
 topics: [dotnet, terminal-ui, cross-platform]

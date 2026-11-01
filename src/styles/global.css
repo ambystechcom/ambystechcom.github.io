@@ -1,269 +1,76 @@
 @import "tailwindcss";
+/* Design tokens and shared utilities (.container-site, .btn-*, .tag, .text-gradient,
+   .card-hover, .section-*) come from the shared Ambystech package. */
+@import "@ambystech/ui/theme.css";
+/* Tailwind v4 does not scan node_modules: let it see the package's classes. */
+@source "../../node_modules/@ambystech/ui/src";
 
-/* ============================================================
-   Ambystech Open Source — design tokens
-   Palette inherited from the Ambystech corporate site and
-   treated here as an ANSI true-color terminal theme.
-   ============================================================ */
-@theme {
-  --font-sans: 'Inter Variable', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'Cascadia Code', Consolas, monospace;
-
-  --color-fanatic-fuchsia: #EE1199;
-  --color-fanatic-fuchsia-dark: #cc0f82;
-  --color-fanatic-fuchsia-light: rgba(238, 17, 153, 0.5);
-  --color-fanatic-fuchsia-lighter: rgba(238, 17, 153, 0.2);
-  --color-bluetiful: #3C69E7;
-  --color-bluetiful-light: rgba(60, 105, 231, 0.5);
-  --color-dark-orchid: #9932CC;
-  --color-dark-orchid-light: rgba(153, 50, 204, 0.5);
-  --color-vivid-sky-blue: #00CCFF;
-  --color-vivid-sky-blue-dark: #0099CC;
-  --color-deep: #0A0D14;
-  --color-deep-raised: #10141f;
-
-  --color-ink: #f4f6fb;
-  --color-ink-dim: rgba(244, 246, 251, 0.68);
-  --color-ink-faint: rgba(244, 246, 251, 0.42);
-  --color-line: rgba(244, 246, 251, 0.12);
-
-  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
+/* ------------------------------------------------------------
+   Open Source site only
+   ------------------------------------------------------------ */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
-  }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    overflow-x: clip;
-  }
-
-  body {
-    background-color: var(--color-deep);
-    /* Ambient wash: the corporate purple-over-dark mood, in pure CSS */
-    background-image:
-      radial-gradient(60rem 40rem at 85% -10%, rgba(153, 50, 204, 0.22), transparent 65%),
-      radial-gradient(50rem 36rem at -15% 30%, rgba(60, 105, 231, 0.16), transparent 60%),
-      radial-gradient(44rem 30rem at 70% 105%, rgba(238, 17, 153, 0.10), transparent 60%);
-    background-attachment: fixed;
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  ::selection {
-    background: var(--color-fanatic-fuchsia);
-    color: #fff;
-  }
-
-  /* Visible keyboard focus in brand color (corporate convention) */
-  :focus-visible {
-    outline: 2px solid var(--color-vivid-sky-blue);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-}
-
-/* Brand gradient, same stops as the corporate site */
-.gradient-text {
-  background-image: linear-gradient(90deg, #EE1199 0%, #9932CC 28%, #00CCFF 95%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  html { scroll-padding-top: 5.5rem; }
+  :focus-visible { outline: 2px solid var(--color-blue-500); outline-offset: 3px; }
+  ::selection { background: var(--color-fuchsia-500); color: #fff; }
 }
 
 .skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -3.5rem;
-  z-index: 999;
-  background: var(--color-fanatic-fuchsia);
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0 0 8px 8px;
-  text-decoration: none;
-  transition: top 0.25s var(--ease-brand);
+  position: absolute; left: 1rem; top: -3.5rem; z-index: 999;
+  background: var(--color-fuchsia-500); color: #fff; font-size: .85rem; font-weight: 700;
+  padding: .5rem 1rem; border-radius: 0 0 12px 12px; text-decoration: none; transition: top .25s;
 }
 .skip-link:focus { top: 0; }
 
-/* Nav links: animated underline grows from the left (corporate convention) */
-.nav-link {
-  position: relative;
-}
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  height: 2px;
-  width: 100%;
-  background: var(--color-fanatic-fuchsia);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s var(--ease-brand);
-}
-.nav-link:hover::after,
-.nav-link:focus-visible::after {
-  transform: scaleX(1);
-}
+/* Language pill on project cards, hero and detail pages. */
+.lang-pill { display: inline-flex; flex: none; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 700; }
+.lang-pill i { width: 7px; height: 7px; border-radius: 999px; background: currentColor; }
+.lang-csharp { background: var(--color-violet-50); color: var(--color-violet-600); }
+.lang-typescript { background: #eef3ff; color: #2f5fd4; }
 
-/* ============================================================
-   Prose — rendered markdown on project detail pages.
-   Headings pick up the page's --accent (set per project).
-   ============================================================ */
-.prose {
-  max-width: 50rem;
-  padding-block: 2rem 3rem;
-  font-size: 1rem;
-  color: var(--color-ink-dim);
-}
-.prose h2 {
-  font-family: var(--font-mono);
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-  margin: 2.5rem 0 1rem;
-}
-.prose h2::before {
-  content: "## ";
-  color: var(--accent, var(--color-fanatic-fuchsia));
-}
-.prose h3 {
-  font-family: var(--font-mono);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--color-ink);
-  margin: 2rem 0 0.75rem;
-}
-.prose p { margin: 0 0 1rem; }
-.prose strong { color: var(--color-ink); }
-.prose a {
-  color: var(--color-vivid-sky-blue);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.prose a:hover { color: var(--color-fanatic-fuchsia); }
-.prose ul, .prose ol {
-  margin: 0 0 1.25rem;
-  padding-left: 1.4rem;
-}
-.prose ul { list-style: disc; }
-.prose ol { list-style: decimal; }
-.prose li { margin-bottom: 0.4rem; }
-.prose li::marker { color: var(--accent, var(--color-fanatic-fuchsia)); }
-.prose code {
-  font-size: 0.85em;
-  color: var(--color-vivid-sky-blue);
-  background: rgba(244, 246, 251, 0.06);
-  border-radius: 5px;
-  padding: 0.1em 0.4em;
-}
-.prose pre {
-  background: var(--color-deep-raised) !important;
-  border: 1px solid var(--color-line);
-  border-radius: 12px;
-  padding: 1.1rem 1.3rem;
-  margin: 0 0 1.5rem;
-  overflow-x: auto;
-  font-size: 0.85rem;
-  line-height: 1.7;
-}
-.prose pre code {
-  background: none;
-  padding: 0;
-  color: inherit;
-  font-size: inherit;
-}
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-  margin: 0 0 1.5rem;
-  display: block;
-  overflow-x: auto;
-}
-.prose th, .prose td {
-  text-align: left;
-  border-bottom: 1px solid var(--color-line);
-  padding: 0.55rem 1rem 0.55rem 0;
-  vertical-align: top;
-}
-.prose th {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-ink-faint);
-}
-.prose blockquote {
-  border-left: 2px solid var(--accent, var(--color-fanatic-fuchsia));
-  margin: 0 0 1.25rem;
-  padding-left: 1.25rem;
-  color: var(--color-ink-faint);
-}
-.prose img { max-width: 100%; border-radius: 12px; }
-.prose hr {
-  border: none;
-  border-top: 1px solid var(--color-line);
-  margin: 2rem 0;
-}
+/* Gradient icon tiles (accent tiles from the design system). */
+.tile-blue { background: linear-gradient(135deg, #27b7ff, #4f72ff, #7459ff); }
+.tile-purple { background: linear-gradient(135deg, #6f5bff, #914cf4, #c139e9); }
+.tile-fuchsia { background: linear-gradient(135deg, #f20c95, #c23cf0, #675fff); }
 
-/* ============================================================
-   Motion system — mirrors the corporate [data-reveal] pattern.
-   Gated on html.js so no-JS users always see content.
-   ============================================================ */
-html.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 0.7s var(--ease-brand),
-    transform 0.7s var(--ease-brand);
-  transition-delay: var(--reveal-delay, 0s);
-}
-html.js [data-reveal="fade"] { transform: none; }
-html.js [data-reveal="left"] { transform: translateX(-32px); }
-html.js [data-reveal="right"] { transform: translateX(32px); }
-html.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
-/* Interactive card language: lift + brand glow (corporate convention) */
-.card-lift {
-  transition:
-    transform 0.35s var(--ease-brand),
-    box-shadow 0.35s var(--ease-brand),
-    border-color 0.35s var(--ease-brand);
+/* Rendered markdown on project pages (light). */
+.prose-oss { color: var(--color-slate-600); font-size: 15px; line-height: 1.86; }
+.prose-oss > :first-child { margin-top: 0; }
+.prose-oss h2 {
+  margin: 56px 0 0; font-size: clamp(28px, 3.2vw, 38px); font-weight: 760; line-height: 1.05;
+  letter-spacing: -.046em; color: var(--color-ink-950);
 }
-.card-lift:hover {
-  transform: translateY(-6px);
+.prose-oss h3 { margin: 32px 0 0; font-size: 18px; font-weight: 735; letter-spacing: -.02em; color: var(--color-navy-900); }
+.prose-oss p { margin: 16px 0 0; }
+.prose-oss strong { color: var(--color-navy-900); }
+.prose-oss a { color: var(--color-fuchsia-text); text-decoration: underline; text-underline-offset: 3px; }
+.prose-oss a:hover { color: var(--color-ink-950); }
+.prose-oss ul, .prose-oss ol { margin: 16px 0 0; padding-left: 1.3rem; }
+.prose-oss ul { list-style: disc; }
+.prose-oss ol { list-style: decimal; }
+.prose-oss li { margin-top: 6px; }
+.prose-oss li::marker { color: var(--color-accent-blue); }
+.prose-oss code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86em; color: var(--color-navy-900); background: var(--color-surface-100); border-radius: 6px; padding: .1em .4em; }
+.prose-oss pre {
+  margin: 18px 0 0; overflow-x: auto; border: 1px solid var(--color-line-200); border-radius: 17px;
+  padding: 16px 20px; font-size: 13px; line-height: 1.7; background: var(--color-surface-50) !important;
 }
+.prose-oss pre code { background: none; padding: 0; font-size: inherit; }
+.prose-oss table { display: block; width: 100%; margin-top: 18px; overflow-x: auto; border-collapse: collapse; font-size: 13px; }
+.prose-oss th, .prose-oss td { border-bottom: 1px solid var(--color-line-200); padding: 12px 16px 12px 0; text-align: left; vertical-align: top; }
+.prose-oss th { font-size: 10px; font-weight: 830; letter-spacing: .16em; text-transform: uppercase; color: var(--color-muted-500); }
+.prose-oss blockquote { margin: 18px 0 0; border-left: 2px solid var(--color-accent-blue); padding-left: 18px; color: var(--color-muted-500); }
+.prose-oss hr { margin: 40px 0; border: 0; border-top: 1px solid var(--color-line-200); }
+.prose-oss img { max-width: 100%; border-radius: 17px; }
+
+/* Scroll reveal (corporate [data-reveal] pattern), gated on html.js. */
+html.js [data-reveal] { opacity: 0; transform: translateY(15px); transition: opacity .58s ease, transform .58s ease; transition-delay: var(--reveal-delay, 0s); }
+html.js [data-reveal].is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  html.js [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-  .card-lift, .card-lift:hover {
-    transform: none;
-    transition: none;
-  }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
+  html.js [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .card-hover:hover { transform: none; }
 }

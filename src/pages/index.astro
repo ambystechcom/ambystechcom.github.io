@@ -1,13 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import TerminalHero from '../components/TerminalHero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '@ambystech/ui/components/Icon.astro';
+import CTABand from '@ambystech/ui/components/CTABand.astro';
 import site from '../data/site.json';
-import { getProjects } from '../utils/projects';
+import { getProjects, langClass } from '../utils/projects';
 
 const projects = await getProjects();
+const languages = [...new Set(projects.map((p) => p.data.language))];
+const registries = [...new Set(projects.map((p) => p.data.registry))];
+const count = (lang: string) => projects.filter((p) => p.data.language === lang).length;
+
+const facts = [
+  ['Repositories', String(projects.length)],
+  ['License', 'MIT'],
+  ['Registries', registries.join(' · ')],
+  ['Contributions', 'Open'],
+];
+
+const principles = [
+  { n: '01', key: 'license: MIT', title: 'Use it however you need.', body: 'Every project is MIT licensed. Commercial use, forks, embedding and shipping are all fine, no conditions attached.' },
+  { n: '02', key: 'origin: in-house', title: 'Proven before it is public.', body: 'Each library runs inside Ambystech client and product work first. We release what we already depend on.' },
+  { n: '03', key: 'contrib: open', title: 'Issues and PRs welcome.', body: 'Every repository takes issues, pull requests and discussions. A person from our team reads and answers them.' },
+];
+
+const more = [
+  { host: 'ambykit.ambystech.io', title: 'AmbyKit documentation', body: 'Install the CLI, write your constitution, and run the spec-driven workflow in the assistant you already use.', cta: 'Open the docs', href: site.urls.ambykit, icon: 'book', tile: 'fuchsia' },
+  { host: 'decks.ambystech.io', title: 'Engineering talks', body: 'Short decks from our engineers on the tools they build. They open in the browser and are the same files we present.', cta: 'Browse talks', href: site.urls.decks, icon: 'users', tile: 'purple' },
+] as const;
 
 const schema = [
   {
@@ -31,58 +53,170 @@ const keywords = [
 ];
 ---
 
-<Layout
-  title="Ambystech Open Source — libraries and tools, MIT licensed"
-  keywords={keywords}
-  schema={schema}
->
-  <Nav />
+<Layout title="Ambystech Open Source — libraries and tools, MIT licensed" keywords={keywords} schema={schema}>
+  <Header active={0} />
   <main id="main">
-    <TerminalHero />
-
-    <section id="projects" class="mx-auto w-full max-w-6xl px-5 pb-12 pt-8" aria-labelledby="projects-title">
-      <h2 id="projects-title" class="mb-3 font-mono text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold tracking-tight" data-reveal>
-        <span class="text-fanatic-fuchsia">$</span> ls <span class="text-vivid-sky-blue">~/oss</span>
-      </h2>
-      <p class="mb-11 max-w-2xl text-ink-dim" data-reveal>
-        Everything below is on GitHub today — installable from NuGet and npm,
-        documented, and part of our own everyday toolkit.
-      </p>
-      <div class="grid grid-cols-1 items-stretch gap-6 max-lg:max-w-xl lg:grid-cols-2">
-        {projects.map((project, i) => (
-          <div class="h-full" data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
-            <ProjectCard project={project} />
+    <!-- Hero -->
+    <section aria-labelledby="oss-hero" class="relative overflow-hidden border-b border-line-100 bg-[linear-gradient(135deg,#fbfbff,#f5f7ff_55%,#fff7fc)] py-12 sm:py-[88px] sm:pb-24">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_8%_10%,rgba(242,12,149,.08),transparent_70%),radial-gradient(ellipse_50%_60%_at_92%_40%,rgba(75,114,255,.10),transparent_70%)]"></div>
+      <div class="container-site relative grid items-center gap-11 min-[961px]:grid-cols-[1.08fr_.92fr] min-[961px]:gap-14">
+        <div class="min-w-0" data-reveal>
+          <p class="section-eyebrow m-0 !text-[12px] !tracking-[.18em] text-fuchsia-500">Ambystech Open Source</p>
+          <h1 id="oss-hero" class="mt-[18px] max-w-[12ch] text-[clamp(44px,5.5vw,78px)] font-[780] leading-[.97] tracking-[-.056em] text-ink-950">
+            Software we craft <span class="text-gradient">in the open.</span>
+          </h1>
+          <p class="mt-[22px] max-w-[54ch] text-base leading-[1.8] text-muted-500">
+            Libraries and tools we build for our own client and product work, released under MIT for yours. Use them, fork them or make them better. The team that ships them uses them every day.
+          </p>
+          <div class="mt-[30px] flex flex-wrap gap-3">
+            <a href="#projects" class="btn-cta h-12 px-6 text-[13px] font-extrabold">Browse projects<Icon name="arrowRight" size={13} /></a>
+            <a href={site.urls.githubOrg} rel="noopener" class="btn-outline !h-12 !px-[22px] !text-[13px] !font-bold !text-navy-900">
+              <Icon name="github" size={15} />github.com/ambystechcom
+            </a>
           </div>
-        ))}
+          <dl class="m-0 mt-10 grid grid-cols-2 border-t border-line-200 sm:grid-cols-4">
+            {facts.map(([k, v], i) => (
+              <div class:list={['min-w-0 pt-[18px]', i % 2 === 1 && 'border-l border-line-200 pl-3 sm:pl-[18px]', i % 2 === 0 && 'pr-3 sm:pr-[18px]', i > 0 && 'sm:border-l sm:border-line-200 sm:pl-[18px]', i === 0 && 'sm:pl-0']}>
+                <dt class="text-[10px] font-extrabold uppercase tracking-[.16em] text-muted-500">{k}</dt>
+                <dd class="m-0 mt-1.5 text-xl font-[760] tracking-[-.03em] text-ink-950">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <div class="min-w-0 overflow-hidden rounded-[28px] border border-line-200/90 bg-white/80 shadow-(--shadow-glass) backdrop-blur-[20px]" data-reveal style="--reveal-delay: .1s">
+          <div class="flex items-center justify-between gap-3 border-b border-line-200 px-[22px] py-[18px]">
+            <div class="min-w-0">
+              <p class="m-0 text-sm font-bold tracking-[-.02em] text-navy-900">Repositories</p>
+              <p class="mono m-0 mt-[3px] text-[11px] text-muted-500">github.com/ambystechcom</p>
+            </div>
+            <span class="tag !px-2.5 !py-[5px] !text-[10px]">MIT · ALL</span>
+          </div>
+          <ul class="m-0 list-none px-2.5 py-1.5">
+            {projects.map((p) => (
+              <li>
+                <a href={`/projects/${p.id}/`} class="grid min-h-16 grid-cols-[38px_minmax(0,1fr)_auto] items-center gap-3.5 rounded-[14px] px-3 py-2.5 no-underline hover:bg-surface-50">
+                  <span aria-hidden="true" class={`tile-${p.data.tile} grid size-[38px] place-items-center rounded-xl text-white`}><Icon name={p.data.icon} size={15} /></span>
+                  <span class="min-w-0">
+                    <span class="mono block text-[13px] font-bold text-navy-900">{p.data.name}</span>
+                    <span class="mt-[3px] block truncate text-xs text-muted-500">{p.data.tagline}</span>
+                  </span>
+                  <span class={`lang-pill ${langClass(p.data)} max-[520px]:hidden`}><i aria-hidden="true"></i>{p.data.language}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="flex items-center justify-between gap-3 border-t border-line-200 bg-surface-50/70 px-[22px] py-3.5">
+            <span class="text-xs text-muted-500">{projects.length} repositories · PRs welcome</span>
+            <a href={site.urls.githubOrg} rel="noopener" class="inline-flex min-h-8 items-center gap-1.5 text-xs font-bold text-fuchsia-text no-underline hover:text-ink-950">View on GitHub<Icon name="arrowRight" size={11} /></a>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="ethos" class="mx-auto w-full max-w-6xl px-5 pb-8 pt-18" aria-labelledby="ethos-title">
-      <h2 id="ethos-title" class="mb-3 font-mono text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold tracking-tight" data-reveal>
-        <span class="text-fanatic-fuchsia">$</span> cat <span class="text-vivid-sky-blue">ETHOS.yml</span>
-      </h2>
-      <dl class="mt-9 max-w-3xl border-l-2 border-fanatic-fuchsia-lighter pl-7" data-reveal style="--reveal-delay: .1s">
-        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
-          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-fanatic-fuchsia">license:</span></dt>
-          <dd class="m-0 text-ink-dim">MIT, always. Use it commercially, fork it, embed it, ship it — no strings.</dd>
+    <!-- Projects -->
+    <section id="projects" aria-labelledby="oss-projects" class="section-pad bg-white">
+      <div class="container-site">
+        <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10" data-reveal>
+          <div class="min-w-0 max-w-[640px]">
+            <p class="section-eyebrow m-0 !text-[12px] !tracking-[.18em] text-accent-blue">Projects</p>
+            <h2 id="oss-projects" class="section-title">Libraries we use every day, released for yours.</h2>
+            <p class="mt-4 text-sm leading-[1.78] text-muted-500">Every project is on GitHub, installable from NuGet or npm, documented, and running inside our own products before it ships.</p>
+          </div>
+          <div role="group" aria-label="Filter by language" class="inline-flex flex-none gap-1 rounded-full bg-surface-100 p-1" id="lang-filter">
+            <button type="button" data-filter="all" aria-pressed="true" class="filter-btn">All<span>{projects.length}</span></button>
+            {languages.map((l) => <button type="button" data-filter={l} aria-pressed="false" class="filter-btn">{l}<span>{count(l)}</span></button>)}
+          </div>
         </div>
-        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
-          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-vivid-sky-blue">origin:</span></dt>
-          <dd class="m-0 text-ink-dim">Crafted by the Ambystech team, battle-tested in daily use before release.</dd>
+        <div class="mt-11 grid grid-cols-1 gap-5 min-[901px]:grid-cols-2" id="project-grid">
+          {projects.map((project, i) => (
+            <div class="min-w-0" data-reveal style={`--reveal-delay: ${i * 0.06}s`} data-lang={project.data.language}>
+              <ProjectCard project={project} />
+            </div>
+          ))}
         </div>
-        <div class="mb-6 grid gap-1 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
-          <dt class="m-0"><span class="font-mono text-[0.95rem] font-bold text-dark-orchid">contrib:</span></dt>
-          <dd class="m-0 text-ink-dim">Issues, pull requests and discussions are welcome in every repository.</dd>
-        </div>
-      </dl>
-      <div class="mt-10" data-reveal style="--reveal-delay: .2s">
-        <a
-          class="inline-flex rounded-full border border-fanatic-fuchsia px-6 py-2.5 font-mono text-[0.95rem] font-semibold text-ink no-underline transition-colors hover:bg-fanatic-fuchsia"
-          href={site.urls.githubOrg}
-          rel="noopener"
-        >Open an issue, send a PR →</a>
       </div>
     </section>
+
+    <!-- Principles: the one dark band -->
+    <section id="principles" aria-labelledby="oss-principles" class="section-pad relative overflow-hidden bg-ink-950">
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(173,184,224,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(173,184,224,.06)_1px,transparent_1px)] bg-[size:68px_62px]"></div>
+      <div class="container-site relative">
+        <div class="flex flex-col gap-[18px] sm:flex-row sm:items-end sm:justify-between sm:gap-10" data-reveal>
+          <div class="min-w-0 max-w-[620px]">
+            <p class="section-eyebrow m-0 !text-[12px] !tracking-[.18em] text-pink-on-dark">How we release</p>
+            <h2 id="oss-principles" class="section-title !text-white">Built for our own work first.</h2>
+          </div>
+          <p class="m-0 max-w-[46ch] text-sm leading-[1.78] text-white/60">Nothing here is a side demo. Each library came out of a client or product build, and we keep using it after it ships.</p>
+        </div>
+        <ol class="m-0 mt-11 grid list-none gap-[18px] p-0 min-[901px]:grid-cols-3">
+          {principles.map((x, i) => (
+            <li class="min-w-0 rounded-3xl border border-[rgba(173,184,224,.16)] bg-white/[.035] p-[26px]" data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+              <span class="grid size-9 place-items-center rounded-full bg-[linear-gradient(135deg,#f20c95,#7b55ff)] text-xs font-extrabold text-white">{x.n}</span>
+              <p class="mono m-0 mt-[18px] text-xs text-pink-on-dark">{x.key}</p>
+              <h3 class="m-0 mt-2.5 text-lg font-[735] leading-[1.22] tracking-[-.026em] text-white">{x.title}</h3>
+              <p class="m-0 mt-2.5 text-[13.5px] leading-[1.75] text-white/60">{x.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Docs and talks -->
+    <section aria-labelledby="oss-more" class="section-pad bg-surface-50 !pb-6">
+      <div class="container-site">
+        <div data-reveal>
+          <p class="section-eyebrow m-0 !text-[12px] !tracking-[.18em] text-accent-blue">Docs and talks</p>
+          <h2 id="oss-more" class="section-title">Read the docs. Watch how we use them.</h2>
+        </div>
+        <div class="mt-10 grid gap-5 min-[901px]:grid-cols-2">
+          {more.map((m, i) => (
+            <a href={m.href} rel="noopener" class="card-hover flex min-w-0 items-start gap-5 rounded-3xl border border-line-200 bg-white p-[22px] no-underline shadow-(--shadow-card) sm:p-7" data-reveal style={`--reveal-delay: ${i * 0.08}s`}>
+              <span aria-hidden="true" class={`tile-${m.tile} grid size-14 flex-none place-items-center rounded-full text-white`}><Icon name={m.icon} size={22} /></span>
+              <span class="block min-w-0 flex-1">
+                <span class="block text-[10px] font-[830] uppercase tracking-[.2em] text-muted-500">{m.host}</span>
+                <span class="mt-2 block text-xl font-bold leading-[1.2] tracking-[-.03em] text-ink-950">{m.title}</span>
+                <span class="mt-2 block text-[13.5px] leading-[1.72] text-muted-500">{m.body}</span>
+                <span class="mt-4 inline-flex items-center gap-[7px] text-[12.5px] font-bold text-fuchsia-text">{m.cta}<Icon name="arrowRight" size={11} /></span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="bg-surface-50 pb-[70px] sm:pb-[100px]">
+      <CTABand
+        surface="clear"
+        title="Using one of our projects? Tell us what you built."
+        body="Issues, pull requests and discussions are open in every repository."
+        button="Open an issue"
+        href={site.urls.githubOrg}
+      />
+    </div>
   </main>
   <Footer />
 </Layout>
+
+<style is:global>
+  .filter-btn {
+    display: inline-flex; min-height: 40px; align-items: center; gap: 8px; border: 0; border-radius: 999px;
+    padding: 0 16px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+    background: transparent; color: var(--color-slate-600);
+  }
+  .filter-btn span { font-size: 11px; font-weight: 700; color: var(--color-muted-500); }
+  .filter-btn[aria-pressed='true'] { background: #fff; color: var(--color-navy-900); box-shadow: 0 4px 12px rgba(47, 69, 114, .10); }
+  .filter-btn[aria-pressed='true'] span { color: var(--color-fuchsia-text); }
+</style>
+
+<script>
+  // Language filter: show only the cards whose data-lang matches.
+  const group = document.getElementById('lang-filter');
+  const cards = document.querySelectorAll<HTMLElement>('#project-grid > [data-lang]');
+  group?.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn) return;
+    group.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    cards.forEach((c) => { c.hidden = btn.dataset.filter !== 'all' && c.dataset.lang !== btn.dataset.filter; });
+  });
+</script>

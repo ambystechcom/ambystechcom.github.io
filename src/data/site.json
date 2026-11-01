@@ -8,7 +8,9 @@
     "corporate": "https://www.ambystech.com",
     "blog": "https://www.ambystech.com/en/blog",
     "jobs": "https://www.ambystech.com/en/jobs",
-    "githubOrg": "https://github.com/ambystechcom"
+    "githubOrg": "https://github.com/ambystechcom",
+    "ambykit": "https://ambykit.ambystech.io",
+    "decks": "https://decks.ambystech.io"
   },
   "socialLinks": [
     { "name": "GitHub", "url": "https://github.com/ambystechcom" },

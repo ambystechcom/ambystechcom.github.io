@@ -19,7 +19,7 @@ export default defineConfig({
     // so rendered project pages stay as they were. Same setting as corporate.
     processor: unified(),
     shikiConfig: {
-      theme: 'tokyo-night',
+      theme: 'github-light',
     },
   },
 });

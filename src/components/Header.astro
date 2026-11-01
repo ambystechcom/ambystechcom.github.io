@@ -1,0 +1,33 @@
+---
+import SiteHeader from '@ambystech/ui/components/SiteHeader.astro';
+import Icon from '@ambystech/ui/components/Icon.astro';
+import site from '../data/site.json';
+
+interface Props {
+  /** Index of the nav link to mark as the current page (-1 for none). */
+  active?: number;
+}
+
+const { active = -1 } = Astro.props;
+
+// Same header family as ambykit.ambystech.io and decks.ambystech.io:
+// only the label and the links change per site.
+const links = [
+  { label: 'Projects', href: '/#projects' },
+  { label: 'Principles', href: '/#principles' },
+  { label: 'AmbyKit docs', href: site.urls.ambykit },
+  { label: 'Talks', href: site.urls.decks },
+];
+---
+
+<SiteHeader homeHref="/" homeLabel="Ambystech Open Source home" label="Open Source" links={links} active={active}>
+  <a
+    slot="actions"
+    href={site.urls.githubOrg}
+    rel="noopener"
+    aria-label="Ambystech on GitHub"
+    class="btn-outline !h-11 !min-h-11 !gap-2 !px-0 max-md:w-11 md:!px-[18px]"
+  >
+    <Icon name="github" size={16} /><span class="max-md:hidden">GitHub</span>
+  </a>
+</SiteHeader>

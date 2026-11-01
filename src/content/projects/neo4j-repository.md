@@ -6,8 +6,8 @@ language: C#
 registry: NuGet
 packageName: Ambystech.Neo4j.Repository
 install: dotnet add package Ambystech.Neo4j.Repository
-accent: sky
-terminalAbout: graph repositories
+tile: blue
+icon: database
 tagline: Generic repository pattern for Neo4j
 description: A lightweight, flexible repository pattern for Neo4j in .NET — simplifies graph data access and keeps your architecture clean and testable.
 topics: [neo4j, repository-pattern, dotnet]
