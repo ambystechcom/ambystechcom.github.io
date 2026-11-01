@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const projects = defineCollection({
@@ -8,7 +9,7 @@ const projects = defineCollection({
     name: z.string(),
     /** Full repository name on GitHub */
     repo: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     language: z.string(),
     registry: z.enum(['NuGet', 'npm']),
     packageName: z.string(),
