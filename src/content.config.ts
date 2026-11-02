@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const projects = defineCollection({
@@ -8,15 +9,16 @@ const projects = defineCollection({
     name: z.string(),
     /** Full repository name on GitHub */
     repo: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     language: z.string(),
     registry: z.enum(['NuGet', 'npm']),
     packageName: z.string(),
     install: z.string(),
     license: z.string().default('MIT'),
-    accent: z.enum(['fuchsia', 'sky', 'orchid', 'bluetiful']),
-    /** Very short label for the hero terminal's ABOUT column */
-    terminalAbout: z.string(),
+    /** Gradient tile behind the project icon (design-system accent tiles) */
+    tile: z.enum(['blue', 'purple', 'fuchsia']),
+    /** Icon name from @ambystech/ui (data/icons.ts) */
+    icon: z.enum(['code', 'database', 'agent', 'laptop']),
     tagline: z.string(),
     description: z.string(),
     topics: z.array(z.string()),

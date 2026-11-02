@@ -6,8 +6,8 @@ language: TypeScript
 registry: npm
 packageName: "@ambystech/axo"
 install: npx @ambystech/axo new my-talk
-accent: bluetiful
-terminalAbout: static slide decks
+tile: blue
+icon: laptop
 tagline: Slide decks that need no runtime
 description: Write slides in MDX and components in .axo — Axo compiles the deck to plain HTML that opens off a USB stick with no wifi, no React and no hydration, and exports to PDF.
 topics: [presentations, mdx, static-site]

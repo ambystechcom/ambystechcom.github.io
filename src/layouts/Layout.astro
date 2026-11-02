@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
 import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
-import AmbientBackground from '../components/AmbientBackground.astro';
 import site from '../data/site.json';
 
 interface Props {
@@ -63,7 +61,7 @@ const jsonLd = [...baseSchema, ...schema];
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords.join(', ')} />
     <meta name="author" content={site.company} />
-    <meta name="theme-color" content="#0A0D14" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -94,9 +92,8 @@ const jsonLd = [...baseSchema, ...schema];
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-  <body>
+  <body class="bg-white font-sans text-ink-950 antialiased">
     <a class="skip-link" href="#main">Skip to content</a>
-    <AmbientBackground />
     <slot />
     <script>
       // Scroll-reveal: elements tagged with data-reveal fade/slide in once

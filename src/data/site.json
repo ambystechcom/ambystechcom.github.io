@@ -8,11 +8,56 @@
     "corporate": "https://www.ambystech.com",
     "blog": "https://www.ambystech.com/en/blog",
     "jobs": "https://www.ambystech.com/en/jobs",
-    "githubOrg": "https://github.com/ambystechcom"
+    "githubOrg": "https://github.com/ambystechcom",
+    "ambykit": "https://ambykit.ambystech.io",
+    "decks": "https://decks.ambystech.io"
   },
   "socialLinks": [
-    { "name": "GitHub", "url": "https://github.com/ambystechcom" },
-    { "name": "X", "url": "https://twitter.com/ambystechcom" },
-    { "name": "LinkedIn", "url": "https://linkedin.com/company/ambystechmx" }
-  ]
+    {
+      "name": "GitHub",
+      "url": "https://github.com/ambystechcom"
+    },
+    {
+      "name": "X",
+      "url": "https://twitter.com/ambystechcom"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://linkedin.com/company/ambystechmx"
+    }
+  ],
+  "footer": {
+    "openSource": [
+      {
+        "label": "ambystech.io",
+        "href": "/"
+      },
+      {
+        "label": "AmbyKit docs",
+        "urlKey": "ambykit"
+      },
+      {
+        "label": "Engineering talks",
+        "urlKey": "decks"
+      },
+      {
+        "label": "Contributing",
+        "urlKey": "githubOrg"
+      }
+    ],
+    "ambystech": [
+      {
+        "label": "ambystech.com",
+        "urlKey": "corporate"
+      },
+      {
+        "label": "Insights",
+        "urlKey": "blog"
+      },
+      {
+        "label": "Careers",
+        "urlKey": "jobs"
+      }
+    ]
+  }
 }

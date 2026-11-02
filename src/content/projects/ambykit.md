@@ -6,8 +6,8 @@ language: TypeScript
 registry: npm
 packageName: "@ambystech/ambykit"
 install: npm install -g @ambystech/ambykit
-accent: orchid
-terminalAbout: spec-driven AI dev
+tile: fuchsia
+icon: agent
 tagline: Spec-driven development for AI coding agents
 description: Author your specs, user stories, plans and tasks once — AmbyKit emits native config for Claude Code, OpenCode, GitHub Copilot, Cursor, Antigravity and more.
 topics: [spec-driven, ai-coding, agent-skills]
