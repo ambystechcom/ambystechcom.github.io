@@ -11,6 +11,12 @@ const social = [
   { name: 'LinkedIn', icon: 'linkedin', label: 'Ambystech on LinkedIn' },
 ] as const;
 
+type FooterLink = { label: string; href?: string; urlKey?: string };
+const resolve = ({ label, href, urlKey }: FooterLink) => ({
+  label,
+  href: urlKey ? site.urls[urlKey as keyof typeof site.urls] : href!,
+});
+
 // Columns mirror the other open-source sites so the family reads as one.
 const columns = [
   {
@@ -22,21 +28,11 @@ const columns = [
   },
   {
     title: 'Open source',
-    items: [
-      { label: 'ambystech.io', href: '/' },
-      { label: 'AmbyKit docs', href: site.urls.ambykit },
-      { label: 'Engineering talks', href: site.urls.decks },
-      { label: 'Contributing', href: site.urls.githubOrg },
-    ],
+    items: site.footer.openSource.map(resolve),
   },
   {
     title: 'Ambystech',
-    items: [
-      { label: 'ambystech.com', href: site.urls.corporate },
-      { label: 'Insights', href: site.urls.blog },
-      { label: 'Careers', href: site.urls.jobs },
-      { label: 'Contact', href: `mailto:${site.email}` },
-    ],
+    items: [...site.footer.ambystech.map(resolve), { label: 'Contact', href: `mailto:${site.email}` }],
   },
 ];
 ---
