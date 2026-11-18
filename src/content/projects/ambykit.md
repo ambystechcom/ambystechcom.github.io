@@ -1,5 +1,6 @@
 ---
 name: ambykit
+image: ../../assets/projects/ambykit-logo.png
 repo: AmbyKit
 url: https://github.com/ambystechcom/AmbyKit
 language: TypeScript
