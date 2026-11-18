@@ -4,7 +4,9 @@ import { glob } from 'astro/loaders';
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
+    /** Optional mascot/illustration shown above the "At a glance" card on the detail page */
+    image: image().optional(),
     /** Short display name, lowercase — rendered in the terminal and card headers */
     name: z.string(),
     /** Full repository name on GitHub */
