@@ -11,17 +11,18 @@ import { getProjects, langClass } from '../utils/projects';
 const projects = await getProjects();
 const languages = [...new Set(projects.map((p) => p.data.language))];
 const registries = [...new Set(projects.map((p) => p.data.registry))];
+const licenses = [...new Set(projects.map((p) => p.data.license))];
 const count = (lang: string) => projects.filter((p) => p.data.language === lang).length;
 
 const facts = [
   ['Repositories', String(projects.length)],
-  ['License', 'MIT'],
+  ['License', licenses.join(' · ')],
   ['Registries', registries.join(' · ')],
   ['Contributions', 'Open'],
 ];
 
 const principles = [
-  { n: '01', key: 'license: MIT', title: 'Use it however you need.', body: 'Every project is MIT licensed. Commercial use, forks, embedding and shipping are all fine, no conditions attached.' },
+  { n: '01', key: 'license: open', title: 'Use it however you need.', body: 'Every project uses a permissive open source license (MIT or Apache-2.0, noted on each project). Commercial use, forks, embedding and shipping are all fine.' },
   { n: '02', key: 'origin: in-house', title: 'Proven before it is public.', body: 'Each library runs inside Ambystech client and product work first. We release what we already depend on.' },
   { n: '03', key: 'contrib: open', title: 'Issues and PRs welcome.', body: 'Every repository takes issues, pull requests and discussions. A person from our team reads and answers them.' },
 ];
@@ -48,12 +49,12 @@ const schema = [
 const keywords = [
   'open source',
   'ambystech',
-  'mit license',
+  ...licenses.map((l) => `${l.toLowerCase()} license`),
   ...new Set(projects.flatMap((p) => [p.data.language.toLowerCase(), ...p.data.topics])),
 ];
 ---
 
-<Layout title="Ambystech Open Source — libraries and tools, MIT licensed" keywords={keywords} schema={schema}>
+<Layout title="Ambystech Open Source — libraries and tools, openly licensed" keywords={keywords} schema={schema}>
   <Header active={0} />
   <main id="main">
     <!-- Hero -->
@@ -66,7 +67,7 @@ const keywords = [
             Software we craft <span class="text-gradient">in the open.</span>
           </h1>
           <p class="mt-[22px] max-w-[54ch] text-base leading-[1.8] text-muted-500">
-            Libraries and tools we build for our own client and product work, released under MIT for yours. Use them, fork them or make them better. The team that ships them uses them every day.
+            Libraries and tools we build for our own client and product work, released under permissive open source licenses for yours. Use them, fork them or make them better. The team that ships them uses them every day.
           </p>
           <div class="mt-[30px] flex flex-wrap gap-3">
             <a href="#projects" class="btn-cta h-12 px-6 text-[13px] font-extrabold">Browse projects<Icon name="arrowRight" size={13} /></a>

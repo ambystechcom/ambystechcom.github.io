@@ -44,7 +44,7 @@ const schema = [
     url: canonical.toString(),
     codeRepository: data.url,
     programmingLanguage: data.language,
-    license: 'https://opensource.org/licenses/MIT',
+    license: `https://spdx.org/licenses/${data.license}.html`,
     keywords: data.topics.join(', '),
     author: { '@id': `${(Astro.site ?? new URL('https://ambystech.io')).origin}/#organization` },
   },
